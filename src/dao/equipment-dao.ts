@@ -1,3 +1,4 @@
+import mongoose, { set } from "mongoose";
 import { IEquipmentAttributes, IEquipmentModel, IEquipment  } from "../models/equipment-model";
 import Equipment from "../schemas/equipment-schema";
 
@@ -13,9 +14,34 @@ export default class EquipmentDAO {
         await newEquipment.save();
 
        }catch (error) {
-        
+
         throw new Error("Error creating Equipment");
 
       }
     }
+
+    //update equipment
+    static async updateEquipment(equipmentId: string, updatedData: Partial<IEquipmentAttributes>) {
+        try {
+            
+            if (!mongoose.Types.ObjectId.isValid(equipmentId)) {
+                throw new Error("Invalid Equipment ID format");
+            }
+    
+            const updatedEquipment = await Equipment.findByIdAndUpdate(
+                equipmentId, 
+                { $set: updatedData }, 
+                { new: true }
+            );
+    
+            if (!updatedEquipment) {
+                throw new Error("Equipment not found");
+            }
+    
+            return updatedEquipment;
+        } catch (error: any) {
+            console.error("Error updating Equipment:", error);
+            throw new Error(error.message || "Error updating Equipment");
+        }
+    }    
 }

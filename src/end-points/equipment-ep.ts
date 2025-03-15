@@ -29,4 +29,44 @@ router.post("/create", async (req, res) => {
   }
 });
 
+//update equipment route
+router.post("/update", async (req, res) => {
+    try {
+        const { id, eq_name, quantity, available } = req.body; 
+
+        if (!id) {
+            return res.status(400).json({ message: "Equipment ID is required" });
+        }
+
+        if (!eq_name || !quantity || !available) {
+            return res.status(400).json({ message: "All fields are required" });
+        }
+
+        const updatedData: IEquipmentAttributes = {
+            eq_name,
+            quantity,
+            available,
+            isActive: 1, 
+        };
+
+        const updatedEquipment = await EquipmentDAO.updateEquipment(id, updatedData);
+
+        if (!updatedEquipment) {
+            return res.status(404).json({ message: "Equipment not found" });
+        }
+
+        res.status(200).json({ message: "Equipment updated successfully", updatedEquipment });
+
+    } catch (error: unknown) {
+        console.error("Update Error:", error);
+        if (error instanceof Error) {
+            res.status(500).json({ message: "Internal Server Error", error: error.message });
+        } else {
+            res.status(500).json({ message: "Internal Server Error", error: "An unknown error occurred" });
+        }
+    }
+});
+
+
+
 export default router;
