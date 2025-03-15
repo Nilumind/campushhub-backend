@@ -99,6 +99,28 @@ router.get("/viewall", async (req, res) => {
     }
 });
 
+//delete equipment
+router.post("/delete", async (req, res) => {
+    try {
+        const { id } = req.body;
+
+        if (!id) {
+            return res.status(400).json({ message: "Equipment ID is required" });
+        }
+
+        const deletedEquipment = await EquipmentDAO.deleteEquipment(id);
+
+        if (!deletedEquipment) {
+            return res.status(404).json({ message: "Equipment not found" });
+        }
+
+        res.status(200).json({ message: "Equipment deleted successfully", deletedEquipment });
+
+    }catch (error) {
+        res.status(500).json({ message: "Internal Server Error", error });
+    }
+});
+
 
 
 export default router;

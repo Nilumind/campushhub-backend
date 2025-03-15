@@ -48,7 +48,7 @@ export default class EquipmentDAO {
     //get equipment by id
     static async getEquipmentById(equipmentId: string) {
         try {
-            const equipment = await Equipment.findById(equipmentId);
+            const equipment = await Equipment.findById(equipmentId, { isActive: 1 });
             console.log("check equipment");
             return equipment;
         } catch (error) {
@@ -59,11 +59,31 @@ export default class EquipmentDAO {
     //gett all equipment
     static async getAllEquipment() {
         try {
-            const equipment = await Equipment.find();
+            const equipment = await Equipment.find({ isActive: 1 });
             return equipment;
         } catch (error) {
             throw new Error("Error fetching Equipment");
     
         }    
+    }
+
+    //delete equipment
+    static async deleteEquipment(equipmentId: string) {
+        try {
+            const deletedEquipment = await Equipment.findByIdAndUpdate(
+                equipmentId,
+                { isActive: 0 },
+                { new: true }
+            );  
+
+            if (!deletedEquipment) {
+                throw new Error("Equipment not found");
+            }
+
+            return deletedEquipment;
+
+         }catch (error) {
+            throw new Error("Error deleting Equipment");
+        }
     }
 }
