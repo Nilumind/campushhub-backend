@@ -86,4 +86,30 @@ export default class EquipmentDAO {
             throw new Error("Error deleting Equipment");
         }
     }
+
+    //check availability in equipment
+    static async checkAvailability(equipmentId: string, quantity: number) {
+        try {
+            const equipment = await Equipment.findById(equipmentId);
+
+            if (!equipment) {
+                throw new Error("Equipment not found");
+            }
+            if (quantity > equipment.quantity) {
+                return { 
+                    success: false, 
+                    message: "Requested quantity exceeds available stock",
+                    availableQuantity: equipment.quantity
+                };
+            }
+
+            return {
+                success: true,
+                message: "Equipment is available",
+                availableQuantity: equipment.quantity
+            };
+        }catch (error) {
+            throw new Error("Error Checking Availability");
+        }
+    }
 }
