@@ -7,16 +7,15 @@ const schemaOptions: SchemaOptions = {
 };
 
 const ReservationSchema = new Schema<IReservationAttributes, IReservationModel>({
-    facilityType: { type: String, required: true },
     facilityName: { type: String, required: true },
     capacity: { type: Number, required: true },
     requestedBy: { type: String, required: true },
-    purpose: { type: String, required: true },
-    startTime: { type: Date, required: true },
-    endTime: { type: Date, required: true },
+    scheduleType: { type: String, required: true },
+    scheduleName: { type: String, required: true },
+    timeSlot: { type: String, required: true },
     status: { type: String, required: true },
-    department: { type: String, required: false },
-    additionalRequirements: { type: String, required: false },
+    description: { type: String, required: false },
+    date: { type: Date, required: true },
 }, { timestamps: true });
 
 const Reservation = mongoose.model<IReservationAttributes, IReservationModel>("Reservation", ReservationSchema);
