@@ -58,11 +58,7 @@ router.post("/create", async (req, res) => {
                     await AllocatedeqDAO.createAllocatedeq(allocatedeqData);
                     
                     return res.status(201).json({ message: "Allocated Equipment created successfully", allocatedeqData });
-                } else {
-                    return res.status(400).json({ message: checkResult.message });
-                }
-                
-
+                } 
                 const av_quantity = equipment.availableQuantity - quantity;
 
                 const allocatedeqData: IAllocatedeqAttributes = {
