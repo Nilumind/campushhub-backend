@@ -8,6 +8,7 @@ import allocatedeqRoutes from "./routes/allocatedeq";
 import scheduleRoutes from "./routes/schedule";
 import attendenceRoutes from "./routes/attendence";
 
+import reservationRoutes from "./routes/reservation";
 
 require("dotenv").config();
 connectDB();
@@ -16,7 +17,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
-app.use("/api", authRoutes, equipmentRoutes, allocatedeqRoutes, scheduleRoutes, attendenceRoutes);
+app.use("/api", authRoutes, equipmentRoutes, allocatedeqRoutes, scheduleRoutes, attendenceRoutes, reservationRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
