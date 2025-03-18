@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import scheduleRoutes from "../end-points/schedule-ep";
+import attendenceRoutes from "../end-points/attendence-ep";
 import { authenticateToken } from '../middleware/auth';
 
 const router = Router();
 
-router.use("/schedule",authenticateToken, scheduleRoutes);
+router.use("/attendence",authenticateToken, attendenceRoutes);
 
 export default router;
