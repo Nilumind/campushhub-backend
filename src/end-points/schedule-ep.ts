@@ -15,6 +15,12 @@ router.post("/create", async (req, res) => {
             return res.status(400).json({ message: "All fields are required" });
         }
 
+        const checkSchedule = await ScheduleDAO.checkAvailableTimeAndDate(date, time_slot);
+
+        if(!checkSchedule.success){
+            return res.status(400).json({ message: checkSchedule.message });
+        }
+
         // Create schedule entry
         const scheduleData: IScheduleAttributes = { // Added missing required field
             shedule_name,
@@ -78,6 +84,12 @@ router.post("/update", async (req, res) => {
         }
         if (!shedule_name || !shedule_type || !date || !time_slot || !place || !description || !capacity) {
             return res.status(400).json({ message: "All fields are required" });
+        }
+
+        const checkSchedule = await ScheduleDAO.checkAvailableTimeAndDate(date, time_slot);
+
+        if(!checkSchedule.success){
+            return res.status(400).json({ message: checkSchedule.message });
         }
 
         const scheduleData: IScheduleAttributes = {

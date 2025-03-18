@@ -89,4 +89,32 @@ export default class ScheduleDAO {
 
        }
     }
+
+    //check available time and date
+    static async checkAvailableTimeAndDate(date: string, time_slot: string){
+        try {
+            const schedule = await Schedule.findOne({
+                date : date,
+                time_slot : time_slot,
+                isActive: 1,
+            });
+
+            if(schedule){
+                return {
+                    success :  false,
+                    message: "Time and date already booked",
+                }
+            }
+
+            return {
+                success :  true,
+                message: "Time and date available",
+            }
+            
+        } catch{
+            throw new Error("Error checking available time and date");
+
+       }
+    }
+
 } 
