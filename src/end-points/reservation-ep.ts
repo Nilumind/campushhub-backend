@@ -7,7 +7,7 @@ const router = Router();
 //create reservation route
 router.post("/create", async (req, res) => {
     try {
-        const { facilityName, capacity, requestedBy, scheduleType, scheduleName, timeSlot, status, description, date } = req.body;
+        const { facilityName, capacity, requestedBy, scheduleType, scheduleName, timeSlot, status, description, date, equipmentId, equipmentQuantity } = req.body;
 
         if (!facilityName || !capacity || !requestedBy || !scheduleType || !scheduleName || !timeSlot || !status || !date) {
             return res.status(400).json({ message: "All fields are required" });
@@ -23,6 +23,8 @@ router.post("/create", async (req, res) => {
             status,
             description,
             date,
+            equipmentId,
+            equipmentQuantity,
         };
 
         await ReservationDAO.addReservation(reservationData);

@@ -15,6 +15,8 @@ export enum facilityName {
 export interface IReservationAttributes {
     facilityName: facilityName;
     capacity: number;
+    equipmentId?: string;
+    equipmentQuantity?: number;
     requestedBy: string;
     scheduleType: string;
     scheduleName: string;

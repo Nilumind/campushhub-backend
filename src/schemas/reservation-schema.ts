@@ -9,6 +9,8 @@ const schemaOptions: SchemaOptions = {
 const ReservationSchema = new Schema<IReservationAttributes, IReservationModel>({
     facilityName: { type: String, required: true },
     capacity: { type: Number, required: true },
+    equipmentId: { type: String, required: false },
+    equipmentQuantity: { type: Number, required: false },
     requestedBy: { type: String, required: true },
     scheduleType: { type: String, required: true },
     scheduleName: { type: String, required: true },
