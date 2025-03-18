@@ -36,4 +36,28 @@ router.post("/create", async (req, res) => {
     }
 });
 
+//cancel attendence route
+router.post("/cancel", async (req, res) => {
+    try {
+        const { attendence_id } = req.body;
+
+        if (!attendence_id) {
+            return res.status(400).json({ message: "Attendence ID is required" });
+        }
+
+        const attendence = await AttendenceDAO.cancelAttendence(attendence_id);
+
+        if (!attendence.success) {
+            return res.status(400).json({ message: attendence.message });
+        }
+
+        res.status(200).json({ message: "Attendence cancelled successfully", attendence });
+        
+    }catch (error) {
+        res.status(500).json({ message: "Internal Server Error", error });
+    }
+});
+
+
+
 export default router;

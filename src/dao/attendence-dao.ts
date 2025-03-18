@@ -20,7 +20,12 @@ export default class AttendenceDAO {
 
     static async getAttendenceByScheduleId(schedule_id: string){
         try {
-            return await Attendence.find({schedule_id: schedule_id});
+
+            if(!mongoose.Types.ObjectId.isValid(schedule_id)){
+                return { message :  "Invalid Schedule ID"};
+            }
+
+            return await Attendence.find({schedule_id: schedule_id, status: 1});
         } catch{
             throw new Error("Error fetching Attendence");
         }
@@ -30,7 +35,12 @@ export default class AttendenceDAO {
 
     static async getAttendenceById(id: string){
         try {
-            const attendencebyid =  await Attendence.findById(id);
+
+            if(!mongoose.Types.ObjectId.isValid(id)){
+                return { message :  "Invalid Attendence ID"};
+            }
+
+            const attendencebyid =  await Attendence.findById(id, {status: 1});
 
             if(!attendencebyid){
                 return { message :  "Attendence not found"};
@@ -47,7 +57,12 @@ export default class AttendenceDAO {
 
     static async getAttendenceByUserId(user_id: string){
         try {
-            const attendencebyuserid = await Attendence.find({user_id: user_id});
+
+            if(!mongoose.Types.ObjectId.isValid(user_id)){
+                return { message :  "Invalid User ID"};
+            }
+
+            const attendencebyuserid = await Attendence.find({user_id: user_id , status: 1});
 
             if(!attendencebyuserid){
                 return { message :  "Attendence not found"};
@@ -63,12 +78,18 @@ export default class AttendenceDAO {
 
     static async cancelAttendence(id: string){
         try {
+
+            if(!mongoose.Types.ObjectId.isValid(id)){
+                return { success: false, message : "Invalid Attendence ID"};
+            }
+
             const attendence = await Attendence.findByIdAndUpdate(id, {status: 0}, {new: true});
 
             if(!attendence){
-                throw new Error("Attendence not found");
+                return { success: false, message : "Attendence not found"};
             }
-            return attendence;
+            return { success: true, attendence };
+
         } catch{
             throw new Error("Error Cancelling Attendence");
         }
